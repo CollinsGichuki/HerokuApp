@@ -1,30 +1,35 @@
-package com.snilloc.herokuapp
+package com.snilloc.herokuapp.model
 
-import com.google.gson.annotations.SerializedName
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.*
-
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Headers
+import retrofit2.http.POST
 
 interface ApiInterface {
     @Headers("format:json")
     @GET("profile/")
     fun getProfilesList(): Call<List<SignUpResponse>> //This works
 
-    @Headers("Content-Type:application/json")
-    @POST("login")
-    fun signIn(@Body info: UserSignIn): Call<ResponseBody>
+    @Headers("format:json")
+    @POST("login/")
+    fun signIn(@Body info: UserSignInBody): Call<SignInResponse>
 
     @Headers("format:json")
     @POST("profile/")
-    fun signUp(@Body info: UserBody) : Call<SignUpResponse> //This works
+    fun signUp(@Body info: SignUpBody): Call<SignUpResponse> //This works
 
     @GET("feed/")
     fun getFeed(): Call<FeedResults>
+
+    @POST("upload/")
+    fun postPhoto(): Call<ResponseBody>
 }
 
 class RetrofitInstance {
@@ -42,27 +47,9 @@ class RetrofitInstance {
         fun getRetrofitInstance(): Retrofit {
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
                 .build()
         }
     }
 }
-
-data class UserBody(val email: String, val name: String, val password: String)
-
-data class UserSignIn(
-    @SerializedName("email")
-    val userEmail: String,
-    @SerializedName("password")
-    val userPassword: String)
-
-data class SignUpResponse(
-    @SerializedName("id")
-    val responseId: Int,
-    @SerializedName("email")
-    val responseEmail: String,
-    @SerializedName("name")
-    val responseName: String)
-
-data class FeedResults(val details: String)

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.SignUpActivity">
+    tools:context=".ui.SignInActivity">
 
     <ImageView
         android:id="@+id/image_view"
@@ -30,27 +30,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:gravity="center_horizontal"/>
 
-    <EditText
-        android:id="@+id/name_et"
+    <TextView
+        android:id="@+id/email_verify_tv"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="Name"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/title_tv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="10dp"
         android:paddingStart="5dp"
         android:paddingTop="5dp"
-        android:inputType="textCapWords"
-        android:maxLines="1"
-        android:background="@drawable/edit_text_border"/>
+        android:text="@string/please_verify_your_email_address"
+        android:visibility="gone"
+        tools:visibility="visible"/>
 
     <EditText
         android:id="@+id/email_address_et"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="@string/email_address"
-        app:layout_constraintTop_toBottomOf="@+id/name_et"
+        app:layout_constraintTop_toBottomOf="@+id/email_verify_tv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="10dp"
@@ -75,25 +74,37 @@
         android:background="@drawable/edit_text_border"/>
 
     <Button
-        android:id="@+id/btn_sign_up"
+        android:id="@+id/btn_sign_in"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sign Up"
+        android:text="Sign In"
         app:layout_constraintTop_toBottomOf="@+id/password_ed"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="35dp"/>
 
     <TextView
-        android:id="@+id/sign_in_tv"
+        android:id="@+id/sign_up_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/btn_sign_up"
+        app:layout_constraintTop_toBottomOf="@+id/btn_sign_in"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/sign_in"
+        android:text="@string/sign_up"
         android:textSize="21sp"
         android:padding="10dp"
-        android:layout_margin="20dp" />
+        android:layout_marginTop="35dp"
+        android:layout_marginStart="15dp"/>
+
+    <TextView
+        android:id="@+id/forget_password_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Forgot Password?"
+        app:layout_constraintTop_toBottomOf="@+id/btn_sign_in"
+        app:layout_constraintStart_toEndOf="@+id/sign_up_tv"
+        android:textSize="21sp"
+        android:padding="10dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginStart="5dp"/>
 
     <ProgressBar
         android:id="@+id/progress_bar"

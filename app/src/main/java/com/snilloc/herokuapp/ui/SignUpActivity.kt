@@ -1,12 +1,18 @@
-package com.snilloc.herokuapp
+package com.snilloc.herokuapp.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.snilloc.herokuapp.MainActivity
 import com.snilloc.herokuapp.databinding.ActivitySignUpBinding
+import com.snilloc.herokuapp.model.ApiInterface
+import com.snilloc.herokuapp.model.RetrofitInstance
+import com.snilloc.herokuapp.model.SignUpResponse
+import com.snilloc.herokuapp.model.SignUpBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,8 +28,13 @@ class SignUpActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        binding.btnSignUp.setOnClickListener {
-            signUp()
+        binding.apply {
+            btnSignUp.setOnClickListener {
+                signUp()
+            }
+            signInTv.setOnClickListener {
+                goToSignInActivity()
+            }
         }
     }
 
@@ -37,65 +48,30 @@ class SignUpActivity : AppCompatActivity() {
         val name = binding.nameEt.text.toString()
         val email = binding.emailAddressEt.text.toString()
         val password = binding.passwordEd.text.toString()
-
-        val signUpDetails = UserBody(email, name, password)
+        val signUpDetails = SignUpBody(email, name, password)
 
         val retrofitInstance = RetrofitInstance.getRetrofitInstance().create(ApiInterface::class.java)
-
-        //val call = retrofitInstance.getProfilesList()
         retrofitInstance.signUp(signUpDetails).enqueue(object : Callback<SignUpResponse> {
-            override fun onResponse(call: Call<SignUpResponse>, response: Response<SignUpResponse>) {
+            override fun onResponse(
+                call: Call<SignUpResponse>,
+                response: Response<SignUpResponse>
+            ) {
                 if (response.isSuccessful) {
                     binding.progressBar.visibility = View.INVISIBLE
-                    Toast.makeText(this@SignUpActivity, "Profiles successful", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@SignUpActivity, "Profiles successful", Toast.LENGTH_LONG)
+                        .show()
                     Log.d(TAG, "Profile Name: ${response.body()?.responseName}")
                 }
             }
 
             override fun onFailure(call: Call<SignUpResponse>, t: Throwable) {
                 binding.progressBar.visibility = View.INVISIBLE
-                Toast.makeText(this@SignUpActivity, "Profiles unsuccessful", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@SignUpActivity, "Profiles unsuccessful", Toast.LENGTH_LONG)
+                    .show()
                 Log.d(TAG, "error : $t")
             }
 
         })
-
-
-
-
-//        call.enqueue(object : Callback<List<SignUpResponse>> {
-//            override fun onResponse(
-//                call: Call<List<SignUpResponse>>,
-//                response: Response<List<SignUpResponse>>
-//            ) {
-//                if (response.isSuccessful) {
-//                    binding.progressBar.visibility = View.INVISIBLE
-//                    Toast.makeText(this@SignUpActivity, "Profiles successful", Toast.LENGTH_LONG).show()
-//                    Log.d(TAG, "Profiles: ${response.body()?.get(1)?.responseName}")
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<List<SignUpResponse>>, t: Throwable) {
-//                binding.progressBar.visibility = View.INVISIBLE
-//                Toast.makeText(this@SignUpActivity, "Profile unsuccessful", Toast.LENGTH_LONG).show()
-//            }
-//
-//        })
-
-//        retrofitInstance.getFeed().enqueue(object : Callback<FeedResults> {
-//            override fun onResponse(call: Call<FeedResults>, response: Response<FeedResults>) {
-//                if (response.isSuccessful) {
-//                    Toast.makeText(this@SignUpActivity, "Sign up successful", Toast.LENGTH_LONG).show()
-//                    Log.d(TAG, "Sign up successful. ID: ${response.body()}")
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<FeedResults>, t: Throwable) {
-//                Toast.makeText(this@SignUpActivity, "Sign up unsuccessful", Toast.LENGTH_LONG).show()
-//                Log.d(TAG, "Sign up unsuccessful. Error: $t")
-//            }
-//        })
-
     }
 
     private fun validateDetails(): Boolean {
@@ -130,5 +106,14 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         return valid
+    }
+
+    private fun goToSignInActivity() {
+        val intent = Intent(this, SignInActivity::class.java)
+        //Verify that the Intent will open up the Activity without any problems
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+            finish()
+        }
     }
 }

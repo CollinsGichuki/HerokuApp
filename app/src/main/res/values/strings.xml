@@ -11,4 +11,6 @@
     <string name="go_back_to_sign_in_page">Go back to Sign In Activity</string>
     <string name="please_verify_your_email_address">Please verify your email address</string>
     <string name="failed">Failed</string>
+    <string name="signed_in_key">signed_in_preference_key</string>
+    <string name="sign_out">Sign Out</string>
 </resources>
