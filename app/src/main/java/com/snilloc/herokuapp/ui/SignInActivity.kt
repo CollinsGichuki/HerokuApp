@@ -53,8 +53,7 @@ class SignInActivity : AppCompatActivity() {
 
         val userSignInBody = UserSignInBody(email, password)
 
-        val retrofitInstance =
-            RetrofitInstance.getRetrofitInstance().create(ApiInterface::class.java)
+        val retrofitInstance = RetrofitInstance.getRetrofitInstance().create(ApiInterface::class.java)
         retrofitInstance.signIn(userSignInBody).enqueue(object : Callback<SignInResponse> {
             override fun onResponse(
                 call: Call<SignInResponse>,

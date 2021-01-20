@@ -8,6 +8,8 @@ data class FeedResults(val details: String)
 
 data class SignInResponse(val token: String)
 
+data class PhotoUploadBody(val photo: String)
+
 data class UserSignInBody(
     @SerializedName("username")
     val userEmail: String,
