@@ -1,4 +1,4 @@
-package com.snilloc.herokuapp.ui
+package com.snilloc.herokuapp.authentication
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,12 +7,11 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.snilloc.herokuapp.MainActivity
 import com.snilloc.herokuapp.databinding.ActivitySignUpBinding
 import com.snilloc.herokuapp.model.ApiInterface
 import com.snilloc.herokuapp.model.RetrofitInstance
-import com.snilloc.herokuapp.model.SignUpResponse
 import com.snilloc.herokuapp.model.SignUpBody
+import com.snilloc.herokuapp.model.SignUpResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -51,11 +50,9 @@ class SignUpActivity : AppCompatActivity() {
         val signUpDetails = SignUpBody(email, name, password)
 
         val retrofitInstance = RetrofitInstance.getRetrofitInstance().create(ApiInterface::class.java)
+        //The Network Call
         retrofitInstance.signUp(signUpDetails).enqueue(object : Callback<SignUpResponse> {
-            override fun onResponse(
-                call: Call<SignUpResponse>,
-                response: Response<SignUpResponse>
-            ) {
+            override fun onResponse(call: Call<SignUpResponse>, response: Response<SignUpResponse>) {
                 if (response.isSuccessful) {
                     binding.progressBar.visibility = View.INVISIBLE
                     Toast.makeText(this@SignUpActivity, "Profiles successful", Toast.LENGTH_LONG)

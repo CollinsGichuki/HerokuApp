@@ -12,10 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HerokuApp">
-        <activity android:name=".ui.SignInActivity"/>
-        <activity android:name=".ui.SignUpActivity">
+        <activity android:name=".authentication.SignInActivity"/>
+        <activity android:name=".authentication.SignUpActivity">
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

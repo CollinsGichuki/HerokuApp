@@ -1,4 +1,4 @@
-package com.snilloc.herokuapp
+package com.snilloc.herokuapp.ui
 
 import android.content.Context
 import android.content.Intent
@@ -13,12 +13,12 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.net.toUri
+import com.snilloc.herokuapp.R
 import com.snilloc.herokuapp.databinding.ActivityMainBinding
 import com.snilloc.herokuapp.model.ApiInterface
 import com.snilloc.herokuapp.model.PhotoUploadBody
 import com.snilloc.herokuapp.model.RetrofitInstance
-import com.snilloc.herokuapp.ui.SignInActivity
+import com.snilloc.herokuapp.authentication.SignInActivity
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
                 choosePhotoFromGallery()
             }
             uploadBtn.setOnClickListener {
-                uploadPhotoToServer()
+                uploadPhotoToServer()//API endpoint has a problem
             }
         }
     }
@@ -57,6 +57,7 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
             uploadPhotoUri = data.data!!
+            Log.d(TAG, "Image Uri: $uploadPhotoUri")
             val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uploadPhotoUri)
             //Set the image
             binding.image1.setImageBitmap(bitmap)
@@ -66,8 +67,8 @@ class MainActivity : AppCompatActivity() {
     private fun uploadPhotoToServer() {
         if (this::uploadPhotoUri.isInitialized) {
             binding.progressBar.visibility = View.VISIBLE
-
             //Create a PhotoUploadBody object
+            //Convert the image uri to a Blob
             val photoUploadBody = PhotoUploadBody(uploadPhotoUri.toString())
 
             //Create the retrofit instance

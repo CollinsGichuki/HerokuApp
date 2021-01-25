@@ -15,16 +15,17 @@ import java.util.concurrent.TimeUnit
 interface ApiInterface {
     @Headers("format:json")
     @GET("profile/")
-    fun getProfilesList(): Call<List<SignUpResponse>> //This works
+    fun getProfilesList(): Call<List<SignUpResponse>>
 
     @Headers("format:json")
     @POST("login/")
-    fun signIn(@Body info: UserSignInBody): Call<SignInResponse>
+    fun signIn(@Body info: SignInBody): Call<SignInResponse>
 
     @Headers("format:json")
     @POST("profile/")
-    fun signUp(@Body info: SignUpBody): Call<SignUpResponse> //This works
+    fun signUp(@Body info: SignUpBody): Call<SignUpResponse>
 
+    @Headers("format:json")
     @GET("feed/")
     fun getFeed(): Call<FeedResults>
 
@@ -36,7 +37,7 @@ interface ApiInterface {
 class RetrofitInstance {
     companion object {
         private const val BASE_URL = "https://roctivapp.herokuapp.com/api/"
-
+        //Http Logging
         private val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
             this.level = HttpLoggingInterceptor.Level.BODY
         }

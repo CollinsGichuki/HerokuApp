@@ -1,4 +1,4 @@
-package com.snilloc.herokuapp.ui
+package com.snilloc.herokuapp.authentication
 
 import android.content.Context
 import android.content.Intent
@@ -8,13 +8,13 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.snilloc.herokuapp.MainActivity
 import com.snilloc.herokuapp.R
 import com.snilloc.herokuapp.databinding.ActivitySignInBinding
 import com.snilloc.herokuapp.model.ApiInterface
 import com.snilloc.herokuapp.model.RetrofitInstance
+import com.snilloc.herokuapp.model.SignInBody
 import com.snilloc.herokuapp.model.SignInResponse
-import com.snilloc.herokuapp.model.UserSignInBody
+import com.snilloc.herokuapp.ui.MainActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -51,14 +51,11 @@ class SignInActivity : AppCompatActivity() {
         val email = binding.emailAddressEt.text.toString()
         val password = binding.passwordEd.text.toString()
 
-        val userSignInBody = UserSignInBody(email, password)
+        val userSignInBody = SignInBody(email, password)
 
         val retrofitInstance = RetrofitInstance.getRetrofitInstance().create(ApiInterface::class.java)
         retrofitInstance.signIn(userSignInBody).enqueue(object : Callback<SignInResponse> {
-            override fun onResponse(
-                call: Call<SignInResponse>,
-                response: Response<SignInResponse>
-            ) {
+            override fun onResponse(call: Call<SignInResponse>, response: Response<SignInResponse>) {
                 binding.progressBar.visibility = View.INVISIBLE
                 if (response.isSuccessful) {
                     //Update signedInValue
@@ -68,7 +65,8 @@ class SignInActivity : AppCompatActivity() {
                     goToMainActivity()
 
                 } else {
-                    Toast.makeText(this@SignInActivity, "Sign in unsuccessful", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@SignInActivity, "Sign in unsuccessful", Toast.LENGTH_LONG)
+                        .show()
                     Log.d(TAG, "Sign in unsuccessful. ${response.code()}")
                 }
             }
